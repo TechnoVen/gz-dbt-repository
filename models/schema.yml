@@ -1,0 +1,55 @@
+version: 2
+
+sources:
+  - name: raw
+    database: lewagon-da-485511
+    schema: gz_raw_data
+    description: "Raw data imported from GZ e-commerce platform"
+    tables:
+      - name: sales
+        identifier: raw_gz_sales
+        description: "Daily sales transactions (one row per product per order)"
+        columns:
+          - name: orders_id
+            description: "Order identifier (not unique - one order can have multiple products)"
+            tests:
+              - not_null
+          - name: date_date
+            description: "Date of transaction"
+            tests:
+              - not_null
+          - name: pdt_id
+            description: "Product identifier"
+            tests:
+              - not_null
+          - name: revenue
+            description: "Revenue generated (EUR)"
+          - name: quantity
+            description: "Quantity sold"
+
+      - name: product
+        identifier: raw_gz_product
+        description: "Product catalog"
+        columns:
+          - name: products_id
+            description: "Primary key - unique product identifier"
+            tests:
+              - unique
+              - not_null
+          - name: purchSE_PRICE
+            description: "Purchase price (EUR)"
+
+      - name: ship
+        identifier: raw_gz_ship
+        description: "Shipping costs data"
+        columns:
+          - name: orders_id
+            description: "Order identifier (not guaranteed unique - depends on shipping logic)"
+            tests:
+              - not_null
+          - name: shipping_fee
+            description: "Fee charged to customer for shipping (EUR)"
+          - name: logCost
+            description: "Logistics cost (EUR)"
+          - name: ship_cost
+            description: "Total shipping cost (EUR)"
